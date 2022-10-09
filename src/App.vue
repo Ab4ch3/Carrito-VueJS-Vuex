@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <h1>Carrito</h1>
-    <pre>{{ carrito }}</pre>
     <Carrito />
     <div class="row">
       <!-- Of se usa tanto para array y objeto y lo pasamos al componente atravez de props-->
@@ -18,10 +17,12 @@
 import { computed, onMounted } from "@vue/runtime-core";
 // useStore nos traera todo lo que tengamos en store
 import { useStore } from "vuex";
+// Importamos componentes q van a ser usados en app
 import Card from "./components/Card";
 import Carrito from "./components/Carrito";
 
 export default {
+  // Declaramos nombre del componenente , y los componentes importados
   name: "App",
   components: {
     Card,
@@ -39,12 +40,11 @@ export default {
     // Para mapaer la data es para que puedan esta disponibles normalmente se realizan en las computed property, en este caso se puede hacer de esta manera
     // Cuando se realiza una arrow funtion si no le colocas las llaves el return esta implicito
     const productos = computed(() => store.state.productos);
-    const carrito = computed(() => store.state.carrito);
+    // const carrito = computed(() => store.state.carrito);
 
     // En vue3 se necesitan retornar los que vamos a usar
     return {
       productos,
-      carrito,
     };
   },
 };

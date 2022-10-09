@@ -8,7 +8,22 @@ export default createStore({
     productos: [],
     carrito: {},
   },
-  getters: {},
+  // Los getters tomando algo del state y lo regresan transformado , solo sirven para devolver el dato "No modifican" el state
+  getters: {
+    totalCantidad(state) {
+      // Nos devuelve la suma de todos los items q se van iterando
+      return Object.values(state.carrito).reduce(
+        (acc, { cantidad }) => acc + cantidad,
+        0
+      );
+    },
+    totalPrecio(state) {
+      return Object.values(state.carrito).reduce(
+        (acc, { cantidad, precio }) => acc + cantidad * precio,
+        0
+      );
+    },
+  },
   // Las mutaciones solo sirven para modificar el state
   mutations: {
     // payload viene siendo donde cargaremos lo q recibimos del api
@@ -19,6 +34,18 @@ export default createStore({
     },
     setCarrito(state, payload) {
       state.carrito[payload.id] = payload;
+    },
+    vaciarCarrito(state) {
+      state.carrito = {};
+    },
+    aumentar(state, payload) {
+      state.carrito[payload].cantidad = state.carrito[payload].cantidad + 1;
+    },
+    disminuir(state, payload) {
+      state.carrito[payload].cantidad = state.carrito[payload].cantidad - 1;
+      if (state.carrito[payload].cantidad === 0) {
+        delete state.carrito[payload];
+      }
     },
   },
   /*  Las acciones se ocupan de hacer un llamado al servidor o si se necesita logica adicional y se pasan a la mutacion para luego ser modificadas y pasarlas al stage
